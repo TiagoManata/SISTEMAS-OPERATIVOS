@@ -6,8 +6,8 @@ Trabalho prático da disciplina de Sistemas Operativos (2024/2025), desenvolvido
 
 Sistema de fórum em modelo cliente-servidor que corre em Linux, composto por dois programas:
 
-- **`manager`** — servidor central. Gere utilizadores, tópicos, subscrições e mensagens, e disponibiliza uma consola de administração.
-- **`feed`** — cliente. Permite a um utilizador registar-se, criar/subscrever tópicos e publicar mensagens que chegam a todos os subscritores desse tópico.
+- **`manager`** - servidor central. Gere utilizadores, tópicos, subscrições e mensagens, e disponibiliza uma consola de administração.
+- **`feed`** - cliente. Permite a um utilizador registar-se, criar/subscrever tópicos e publicar mensagens que chegam a todos os subscritores desse tópico.
 
 A comunicação entre processos é feita através de **named pipes (FIFOs)**: um FIFO principal do servidor para receber pedidos, e um FIFO por cliente (identificado pelo PID) para receber respostas. O servidor usa threads para atender clientes, processar comandos de administração e gerir a expiração de mensagens, sincronizadas com mutexes.
 
@@ -16,7 +16,7 @@ A comunicação entre processos é feita através de **named pipes (FIFOs)**: um
 - Registo de utilizadores com nome único
 - Criação e listagem de tópicos
 - Subscrição e cancelamento de subscrição a tópicos
-- Publicação de mensagens num tópico, com duração (TTL) em segundos — a mensagem expira automaticamente e deixa de ser visível
+- Publicação de mensagens num tópico, com duração (TTL) em segundos - a mensagem expira automaticamente e deixa de ser visível
 - Persistência de mensagens ainda válidas para ficheiro em disco ao encerrar o servidor, e reposição ao arrancar
 - Consola de administração (no processo `manager`) com comandos para:
   - listar utilizadores ligados (`users`)
@@ -69,14 +69,14 @@ exit
 
 No terminal do `manager`, os comandos de administração (`users`, `topics`, `show <topico>`, `lock <topico>`, `unlock <topico>`, `remove <username>`, `close`) podem ser escritos diretamente.
 
-> Nota: o `makefile` inclui um alvo `broker` com o nome de output `manager` — se `make` não gerar o executável `manager`, compilar manualmente com `gcc manager.c -o manager -lpthread` (e o mesmo para `feed.c`).
+> Nota: o `makefile` inclui um alvo `broker` com o nome de output `manager` - se `make` não gerar o executável `manager`, compilar manualmente com `gcc manager.c -o manager -lpthread` (e o mesmo para `feed.c`).
 
 ## O que aprendi
 
 - Comunicação entre processos em Linux usando named pipes, incluindo os cuidados a ter com leitura/escrita bloqueante
 - Programação concorrente com `pthread`, e a necessidade de proteger dados partilhados com mutexes para evitar condições de corrida
 - Desenho de um protocolo próprio de mensagens entre cliente e servidor (structs partilhadas via `util.h`)
-- Gestão do ciclo de vida de processos e recursos do SO (FIFOs, file descriptors) — e a importância de os libertar corretamente
+- Gestão do ciclo de vida de processos e recursos do SO (FIFOs, file descriptors) - e a importância de os libertar corretamente
 - Uso de sinais para desbloquear threads presas em chamadas de leitura, ao encerrar o cliente
 
 ## Melhorias futuras
